@@ -134,7 +134,7 @@ window.onload = function () {
             }
 
             if (menlivo_paranoino)
-                dokuda_paranoish.x = paranoia + 30;
+                dokuda_paranoish.x = paranoia + 10;
 
             return
         }
@@ -212,6 +212,15 @@ window.onload = function () {
             esli_slishkom_strashno = Math.min(maximalna_paranoia, esli_slishkom_strashno + 5);
         } else if (event.key === 'q') {
             esli_slishkom_strashno = Math.max(0, esli_slishkom_strashno - 5);
+        }
+        else if (event.key === 'p') {
+            maximalna_paranoia = Math.min(420, maximalna_paranoia + 10);
+            dokuda_paranoish.x = maximalna_paranoia;
+            dokuda_paranoish.y = maximalna_paranoia / 1.5;
+        } else if (event.key === 's') {
+            maximalna_paranoia = Math.max(0, maximalna_paranoia - 10);
+            dokuda_paranoish.x = maximalna_paranoia;
+            dokuda_paranoish.y = maximalna_paranoia / 1.5;
         }
     });
 
