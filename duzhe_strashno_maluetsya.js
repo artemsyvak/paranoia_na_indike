@@ -1,4 +1,3 @@
-// Global variable for paranoia state
 let paranoia = 0;
 let maximalna_paranoia = 420;
 
@@ -31,10 +30,8 @@ let kraska_malyara_pepelnaya = '#abb3b1';
 let ganchirka_malyara = 'black';
 let DYADYA_MALYAR__ATGIGAY = false;
 
-
 // Current point of the curve
 let currentPoint = { x: 0, y: 0 };
-
 
 function clikaem_po_domu_dlya_malyarevchika() {
     const tak_a_trechek_de = document.querySelector('audio')
@@ -50,17 +47,10 @@ window.onload = function () {
     const canvas = document.getElementById('canvas_of_infinite_dvizhes');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Load the background image
-    // const backgroundImage = new Image();
-    // backgroundImage.src = './lesok.jpg'; // Replace with the path to your image
+    canvas.height = window.innerHeight;   
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // backgroundImage.onload = function () {
-    // Draw the background image
-    // ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     // Calculate the center of the canvas
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2; // A little bit higher on the vertical component
@@ -94,9 +84,6 @@ window.onload = function () {
 
         bystro_chy_potroshky = (Math.random() + 10) * kak_dolgo_plushchit;
 
-        if (kak_nedavno_boyalis.length == esli_slishkom_strashno * 3)
-            kak_nedavno_boyalis.shift();
-
         kak_nedavno_boyalis.push({
             currentPointX: currentPoint.x,
             currentPointY: currentPoint.y,
@@ -109,7 +96,6 @@ window.onload = function () {
         });
 
         if (paranoia >= dokuda_paranoish.x && esli_slishkom_strashno) {
-
             clearInterval(dadya_malyar);
             let current = 1;
             while (kak_nedavno_boyalis.length) {
@@ -127,7 +113,8 @@ window.onload = function () {
                         ganchirka_malyara
                     ), current);
 
-                paranoia -= current_boyazn.naskolko_ispugalis;
+                paranoia = Math.max(0, paranoia - current_boyazn.naskolko_ispugalis);
+
 
                 targetPoint.x = current_boyazn.targetPointX;
                 targetPoint.y = current_boyazn.targetPointY;
@@ -141,8 +128,9 @@ window.onload = function () {
                 dadya_malyar = setInterval(() => updateParanoia(naskolko_ispugan), kak_dolgo_plushchit);
             }, current)
 
+            paranoia = 0;
             if (menlivo_paranoino)
-                dokuda_paranoish.x = 30;
+                dokuda_paranoish.x = paranoia + 30;
 
             return
         }
@@ -212,6 +200,10 @@ window.onload = function () {
             menlivo_paranoino = !menlivo_paranoino;
             if (!menlivo_paranoino)
                 dokuda_paranoish.x = maximalna_paranoia; // Increase
+        } else if (event.key === 'ArrowUp') {
+            koef_sposoistviya = Math.min(100, koef_sposoistviya + 5);
+        } else if (event.key === 'ArrowDown') {
+            koef_sposoistviya = Math.max(0, koef_sposoistviya - 5);
         }
     });
 
