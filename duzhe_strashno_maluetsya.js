@@ -9,7 +9,7 @@ let dokuda_paranoish = {
 let menlivo_paranoino = false;
 
 let rovno_stiky = 2;
-let esli_slishkom_strashno = 100;
+let esli_slishkom_strashno = 0;
 
 let naskolko_ispugan = 17;
 let naskolko_uspokoilsya = -6;
@@ -95,10 +95,10 @@ window.onload = function () {
             naskolko_ispugalis: a_naskolko_ispugan
         });
 
-        if (paranoia >= dokuda_paranoish.x && esli_slishkom_strashno) {
+        if (paranoia >= dokuda_paranoish.x) {
             clearInterval(dadya_malyar);
             let current = 1;
-            while (kak_nedavno_boyalis.length) {
+            while (kak_nedavno_boyalis.length - esli_slishkom_strashno > 0) {
                 let current_boyazn = kak_nedavno_boyalis.at(-1);
 
                 setTimeout(() =>
@@ -123,12 +123,16 @@ window.onload = function () {
                 current += 5;
             }
 
-            kak_nedavno_boyalis = [];
             setTimeout(() => {
                 dadya_malyar = setInterval(() => updateParanoia(naskolko_ispugan), kak_dolgo_plushchit);
             }, current)
 
-            paranoia = 0;
+            if (!esli_slishkom_strashno)
+            {
+                kak_nedavno_boyalis = [];
+                paranoia = 0;
+            }
+
             if (menlivo_paranoino)
                 dokuda_paranoish.x = paranoia + 30;
 
@@ -204,6 +208,10 @@ window.onload = function () {
             koef_sposoistviya = Math.min(100, koef_sposoistviya + 5);
         } else if (event.key === 'ArrowDown') {
             koef_sposoistviya = Math.max(0, koef_sposoistviya - 5);
+        } else if (event.key === 'e') {
+            esli_slishkom_strashno = Math.min(maximalna_paranoia, esli_slishkom_strashno + 5);
+        } else if (event.key === 'q') {
+            esli_slishkom_strashno = Math.max(0, esli_slishkom_strashno - 5);
         }
     });
 
